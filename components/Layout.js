@@ -1,6 +1,6 @@
 import { useSession, signIn,} from "next-auth/react";
 import { Nav } from "./Nav";
-import React, { useState } from "react";
+import React from "react";
 
 export default function Layout ({children}) {
   const { data: session } = useSession();

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import Layout from "@/components/Layout";
+import Layout from "@/components/layout";
 import { useEffect } from "react";
 import axios from "axios";
-
 const Products = () => {
   const [products, setProducts] = useState([]);
 
@@ -34,18 +33,18 @@ const Products = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
-            <tr key={index}>
+          {products.map((product) => (
+            <tr key={product.index}>
               <td>{product.title}</td>
               <td>
-                <Link href={"/products/edit/" + product._id}>
+                <Link href={"/products" + product._id}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-4 h-4"
+                    className="w-6 h-6"
                   >
                     <path
                       strokeLinecap="round"
