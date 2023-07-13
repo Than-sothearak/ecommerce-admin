@@ -1,14 +1,22 @@
-import { useSession, signIn,} from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { Nav } from "./Nav";
 import React from "react";
+import {FcGoogle} from "react-icons/fc";
 
-export default function Layout ({children}) {
+export default function Layout({ children }) {
   const { data: session } = useSession();
   if (!session) {
     return (
       <div className="bg-blue-900 w-screen h-screen flex items-center">
-        <div className="text-center w-full">
-        <button onClick={() => signIn('google')} className="bg-white p-2 px-4 rounded-lg">Login with Google</button>
+        <div className="text-center w-full flex justify-center">
+          <button
+            onClick={() => signIn("google")}
+            className="bg-white p-2 px-4 rounded-lg flex"
+          >
+           <FcGoogle className="w-6 h-6 mr-2"/>
+            Continute with Google
+            
+          </button>
         </div>
       </div>
     );
@@ -22,4 +30,3 @@ export default function Layout ({children}) {
     </div>
   );
 }
-

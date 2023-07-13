@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 export default function Home() {
   const { data: session } = useSession();
 
@@ -14,7 +14,9 @@ export default function Home() {
             className="w-8 h-8"
           />
           <span className="py-1 px-2">{session?.user?.name}</span>
+          <button className="btn-primary"onClick={() => signOut()}>Sign out</button>
         </div>
+        
       </div>
     </Layout>
   );
