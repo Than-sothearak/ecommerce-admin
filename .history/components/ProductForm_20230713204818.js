@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
-import { ReactSortable } from "react-sortablejs";
 
 export default function ProductForm({
   _id,
@@ -42,7 +41,6 @@ export default function ProductForm({
   }
 
   async function UploadImages(e) {
-    e.preventDefault();
     const files = e.target?.files;
 
     if (files?.length > 0) {
@@ -58,9 +56,6 @@ export default function ProductForm({
       setIsUploading(false);
     }
   }
-  function updateImagesOrder(images) {
-    setImages(images)
-  }
   return (
     <form>
       <label>Product name</label>
@@ -72,18 +67,14 @@ export default function ProductForm({
       ></input>
       <label>Photos</label>
       <div className="mb-2 flex flex-wrap gap-2">
-        <ReactSortable
-          className="flex flex-wrap gap-1"
-          list={images}
-          setList={updateImagesOrder}
-        >
-          {!!images?.length &&
-            images.map((link) => (
-              <div key={link} className="h-24">
-                <img src={link} alt={link} className="rounded-lg h-24" />
-              </div>
-            ))}
-        </ReactSortable>
+        {!!images?.length &&
+          images.map((link) => (
+            <div key={link} className="h-24">
+              <<img src={link} alt={link} className="rounded-lg relative"
+               /> 
+               <button className="relative">x</button>
+            </div>
+          ))}
 
         {isUploading && (
           <div className="h-24">
@@ -105,7 +96,6 @@ export default function ProductForm({
               d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"
             />
           </svg>
-
           <div>Upload</div>
           <input type="file" className="hidden" onChange={UploadImages} />
         </label>

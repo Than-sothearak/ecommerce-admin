@@ -58,9 +58,7 @@ export default function ProductForm({
       setIsUploading(false);
     }
   }
-  function updateImagesOrder(images) {
-    setImages(images)
-  }
+  function updateImagesOrder() {}
   return (
     <form>
       <label>Product name</label>
@@ -73,7 +71,7 @@ export default function ProductForm({
       <label>Photos</label>
       <div className="mb-2 flex flex-wrap gap-2">
         <ReactSortable
-          className="flex flex-wrap gap-1"
+          className="flex flex-wrap"
           list={images}
           setList={updateImagesOrder}
         >

@@ -58,9 +58,7 @@ export default function ProductForm({
       setIsUploading(false);
     }
   }
-  function updateImagesOrder(images) {
-    setImages(images)
-  }
+  function updateImagesOrder() {}
   return (
     <form>
       <label>Product name</label>
