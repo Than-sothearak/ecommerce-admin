@@ -8,19 +8,19 @@ import { BeatLoader } from "react-spinners";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  
   useEffect(() => {
     const fatchData = async () => {
       try {
-        setIsUploading(true)
+        setIsUploading(true);
         const res = await axios.get("/api/products");
         setProducts(res.data);
       } catch (err) {
         console.log = err;
       }
-       setIsUploading(false)
+      setIsUploading(false);
     };
     fatchData();
-    
   }, []);
   return (
     <Layout>
@@ -31,14 +31,15 @@ const Products = () => {
         Add new product
       </Link>
       {isUploading && (
-              <div className="flex justify-center"><BeatLoader /></div>
-            )}
+        <div className="flex justify-center">
+          <BeatLoader />
+        </div>
+      )}
       <table className="basic mt-2">
         <thead>
           <tr>
             <td>Product name</td>
             <td></td>
-           
           </tr>
         </thead>
         <tbody>
