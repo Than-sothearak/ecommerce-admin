@@ -11,11 +11,11 @@ export default function ProductForm({
   price: currntPrice,
   images: currentImages,
   category: currentCategory,
-  properties: currentProductProps,
+  productProperties: currentProductProps,
 }) {
   const router = useRouter();
   const [category, setCategory] = useState(currentCategory || "");
-  const [productProperties, setProductProperties] = useState(currentProductProps || {});
+  const [productProperties, setProductProperties] = useState([]);
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDesc || "");
   const [price, setPrice] = useState(currntPrice || "");
@@ -23,6 +23,7 @@ export default function ProductForm({
   const [goToProduct, setGoToProduct] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState([]);
+
 
   useEffect(() => {
     axios.get("/api/categories").then((result) => {
@@ -32,14 +33,7 @@ export default function ProductForm({
 
   const createProdouct = async (e) => {
     e.preventDefault();
-    const data = {
-      title,
-      description,
-      price,
-      images,
-      category,
-      properties: productProperties,
-    };
+    const data = { title, description, price, images, category, productProperties };
     if (_id) {
       //updateForm
       await axios.put("/api/products", { ...data, _id });
@@ -101,10 +95,10 @@ export default function ProductForm({
   }
 
   return (
-    <form onSubmit={createProdouct}>
+    <form>
+      
       <label>Product name</label>
       <input
-        required
         type="text"
         placeholder="new product"
         value={title}
@@ -112,15 +106,11 @@ export default function ProductForm({
       ></input>
       <label>Category</label>
 
-      <select 
-      required
-      value={category} 
-      onChange={(e) => setCategory(e.target.value)}>
-        <option value="">N/a</option>
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="Uncategories">Uncategories</option>
         {categories.length > 0 &&
           categories.map((category) => (
             <option
-              required
               key={category.name}
               title={category.name}
               value={category._id}
@@ -143,7 +133,6 @@ export default function ProductForm({
                 changeProductProperty(property.name, e.target.value)
               }
             >
-              <option>N/a</option>
               {property.values.map((value, index) => (
                 <option key={index} value={value}>
                   {value}
@@ -161,7 +150,9 @@ export default function ProductForm({
         >
           {!!images?.length &&
             images.map((link) => (
-              <div key={link} className="h-24">
+              <div 
+              key={link} 
+              className="h-24">
                 <img src={link} alt={link} className="rounded-lg h-24" />
               </div>
             ))}
@@ -206,7 +197,7 @@ export default function ProductForm({
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       ></input>
-      <button className="btn-primary" type="submit">
+      <button className="btn-primary" type="submit" onClick={createProdouct}>
         Save
       </button>
     </form>

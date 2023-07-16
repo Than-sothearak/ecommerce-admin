@@ -104,7 +104,6 @@ export default function ProductForm({
     <form onSubmit={createProdouct}>
       <label>Product name</label>
       <input
-        required
         type="text"
         placeholder="new product"
         value={title}
@@ -116,7 +115,7 @@ export default function ProductForm({
       required
       value={category} 
       onChange={(e) => setCategory(e.target.value)}>
-        <option value="">N/a</option>
+        <option value=""></option>
         {categories.length > 0 &&
           categories.map((category) => (
             <option

@@ -11,11 +11,10 @@ export default function ProductForm({
   price: currntPrice,
   images: currentImages,
   category: currentCategory,
-  properties: currentProductProps,
 }) {
   const router = useRouter();
   const [category, setCategory] = useState(currentCategory || "");
-  const [productProperties, setProductProperties] = useState(currentProductProps || {});
+  const [productProperties, setProductProperties] = useState([]);
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDesc || "");
   const [price, setPrice] = useState(currntPrice || "");
@@ -32,14 +31,7 @@ export default function ProductForm({
 
   const createProdouct = async (e) => {
     e.preventDefault();
-    const data = {
-      title,
-      description,
-      price,
-      images,
-      category,
-      properties: productProperties,
-    };
+    const data = { title, description, price, images, category };
     if (_id) {
       //updateForm
       await axios.put("/api/products", { ...data, _id });
@@ -84,7 +76,7 @@ export default function ProductForm({
     setProductProperties((prev) => {
       const newProductProps = { ...prev };
       newProductProps[propertyName] = value;
-      return newProductProps;
+      console.log(newProductProps);
     });
   }
   const propertiesToFill = [];
@@ -101,28 +93,22 @@ export default function ProductForm({
   }
 
   return (
-    <form onSubmit={createProdouct}>
+    <form>
       <label>Product name</label>
       <input
-        required
         type="text"
         placeholder="new product"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       ></input>
       <label>Category</label>
-
-      <select 
-      required
-      value={category} 
-      onChange={(e) => setCategory(e.target.value)}>
-        <option value="">N/a</option>
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="Uncategories">Uncategories</option>
         {categories.length > 0 &&
           categories.map((category) => (
             <option
-              required
-              key={category.name}
               title={category.name}
+              key={category._id}
               value={category._id}
             >
               {category.name}
@@ -133,19 +119,17 @@ export default function ProductForm({
         propertiesToFill.map((property) => (
           <div
             title="select property"
-            key={property.name}
+            key={property._id}
             className="flex gap-1"
           >
             <div>{property.name}</div>
             <select
-              value={productProperties[property.name]}
               onChange={(e) =>
                 changeProductProperty(property.name, e.target.value)
               }
             >
-              <option>N/a</option>
-              {property.values.map((value, index) => (
-                <option key={index} value={value}>
+              {property.values.map((value) => (
+                <option key={value._id} value={value}>
                   {value}
                 </option>
               ))}
@@ -160,8 +144,11 @@ export default function ProductForm({
           setList={updateImagesOrder}
         >
           {!!images?.length &&
-            images.map((link) => (
-              <div key={link} className="h-24">
+            images.map((link, index) => (
+              <div 
+              onChange={e => changeImage(images.link, e.target.value)}
+              key={index} 
+              className="h-24">
                 <img src={link} alt={link} className="rounded-lg h-24" />
               </div>
             ))}
@@ -206,7 +193,7 @@ export default function ProductForm({
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       ></input>
-      <button className="btn-primary" type="submit">
+      <button className="btn-primary" type="submit" onClick={createProdouct}>
         Save
       </button>
     </form>

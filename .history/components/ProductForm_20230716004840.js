@@ -101,10 +101,9 @@ export default function ProductForm({
   }
 
   return (
-    <form onSubmit={createProdouct}>
+    <form>
       <label>Product name</label>
       <input
-        required
         type="text"
         placeholder="new product"
         value={title}
@@ -112,15 +111,11 @@ export default function ProductForm({
       ></input>
       <label>Category</label>
 
-      <select 
-      required
-      value={category} 
-      onChange={(e) => setCategory(e.target.value)}>
-        <option value="">N/a</option>
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="Uncategories">Uncategories</option>
         {categories.length > 0 &&
           categories.map((category) => (
             <option
-              required
               key={category.name}
               title={category.name}
               value={category._id}
@@ -143,7 +138,6 @@ export default function ProductForm({
                 changeProductProperty(property.name, e.target.value)
               }
             >
-              <option>N/a</option>
               {property.values.map((value, index) => (
                 <option key={index} value={value}>
                   {value}
@@ -206,7 +200,7 @@ export default function ProductForm({
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       ></input>
-      <button className="btn-primary" type="submit">
+      <button className="btn-primary" type="submit" onClick={createProdouct}>
         Save
       </button>
     </form>

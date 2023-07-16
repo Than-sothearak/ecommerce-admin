@@ -104,7 +104,6 @@ export default function ProductForm({
     <form onSubmit={createProdouct}>
       <label>Product name</label>
       <input
-        required
         type="text"
         placeholder="new product"
         value={title}
