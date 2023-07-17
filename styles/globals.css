@@ -25,16 +25,16 @@ input, textarea, select {
   
 }
 input:focus, textarea:focus , section:focus{
-  @apply border-blue-900
+  @apply border-primary
 }
 h1 {
-  @apply text-blue-900 mb-2 text-xl;
+  @apply text-primary mb-2 text-xl;
 }
 label {
-  @apply text-blue-900
+  @apply text-primary
 }
 .btn-primary {
-  @apply bg-blue-900 text-white px-4 py-1 rounded-md;
+  @apply bg-primary text-white px-4 py-1 rounded-md;
 }
 .btn-delete {
   @apply bg-red-700 text-white px-4 py-1 rounded-md;

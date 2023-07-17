@@ -15,6 +15,7 @@
     "axios": "^1.4.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
+    "jsonwebtoken": "^9.0.1",
     "mime-type": "^4.0.0",
     "mime-types": "^2.1.35",
     "mongodb": "^5.7.0",

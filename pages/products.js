@@ -27,7 +27,7 @@ const Products = () => {
       <Link
         title="add new product"
         href="/products/new"
-        className="bg-blue-900 rounded-md py-1 px-2 text-white"
+        className="bg-primary rounded-md py-1 px-2 text-white"
       >
         Add new product
       </Link>
@@ -49,7 +49,7 @@ const Products = () => {
               <td>{product.title}</td>
               <td className="flex justify-end">
                 <Link
-                  className="bg-blue-900 text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1"
+                  className="bg-primary text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1"
                   title="Edit product"
                   href={"/products/edit/" + product._id}
                 >

@@ -1,15 +1,22 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, {useState} from "react";
 import { signOut } from "next-auth/react";
 
-export const Nav = () => {
+export const Nav = ({show}) => {
   const inactiveLink = "flex gap-2 p-1";
-  const activeLink = inactiveLink + " bg-white text-blue-900 rounded-l-lg";
+  const activeLink = inactiveLink + " bg-highlight text-primary rounded-l-sm";
   const router = useRouter();
   const { pathname } = router;
+  
+  async function Logout () {
+  await router.push('/');
+  await signOut();
+  }
+
+ 
   return (
-    <aside className="text-white p-4 pr-0">
+    <aside className={(show?'left-0':'-left-full')+" top-0 text-gray-500 p-4 fixed w-full bg-white h-full md:static md:w-auto lg:static lg:w-auto transition-all"}>
       <Link href={"/"} className="flex gap-2 mb-4 mr-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +73,7 @@ export const Nav = () => {
               d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
             />
           </svg>
-          Product
+          Products
         </Link>
         <Link
           href={"/categories"}
@@ -137,7 +144,7 @@ export const Nav = () => {
           </svg>
           Setting
         </Link>
-        <button className="flex gap-2 p-1 text-left" onClick={() => signOut()}>
+        <button className="flex gap-2 p-1 text-left" onClick={Logout}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
