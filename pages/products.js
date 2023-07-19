@@ -48,6 +48,7 @@ const Products = () => {
           <tr>
             <td className="font-bold">Product name</td>
             <td className="font-bold">Category</td>
+            <td className="font-bold">In stock</td>
           </tr>
         </thead>
         <tbody>
@@ -55,6 +56,7 @@ const Products = () => {
             <tr title={product.title} key={index}>
               <td>{product.title}</td>
               <td>{categories.filter(c => c._id == product.category)[0]?.name}</td>
+              <td >{product.stock ? product.stock : <h5 className="text-gray-400">Out of stock</h5>}</td>
               <td className="flex justify-end">
                 <Link
                   className="bg-primary text-white text-sm py-1 px-2 rounded-sm inline-flex gap-1 mr-1"
