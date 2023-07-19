@@ -4,22 +4,29 @@ import Layout from "@/components/Layout";
 import { useEffect } from "react";
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
+import categories from "./categories";
+
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  
+  const fatchData = async () => {
+    try {
+      setIsUploading(true);
+      const ressult = await axios.get("/api/categories");
+      setCategories(ressult.data);
 
+      const res = await axios.get("/api/products");
+      setProducts(res.data);
+    } catch (err) {
+      console.log = err;
+    }
+    setIsUploading(false);
+  };
   useEffect(() => {
-    const fatchData = async () => {
-      try {
-        setIsUploading(true);
-        const res = await axios.get("/api/products");
-        setProducts(res.data);
-      } catch (err) {
-        console.log = err;
-      }
-      setIsUploading(false);
-    };
+    
     fatchData();
   }, []);
   return (
@@ -27,7 +34,7 @@ const Products = () => {
       <Link
         title="add new product"
         href="/products/new"
-        className="bg-primary rounded-md py-1 px-2 text-white"
+        className="bg-primary btn-primary"
       >
         Add new product
       </Link>
@@ -40,16 +47,17 @@ const Products = () => {
         <thead>
           <tr>
             <td className="font-bold">Product name</td>
-            <td></td>
+            <td className="font-bold">Category</td>
           </tr>
         </thead>
         <tbody>
           {products.map((product, index) => (
             <tr title={product.title} key={index}>
               <td>{product.title}</td>
+              <td>{categories.filter(c => c._id == product.category)[0]?.name}</td>
               <td className="flex justify-end">
                 <Link
-                  className="bg-primary text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1"
+                  className="bg-primary text-white text-sm py-1 px-2 rounded-sm inline-flex gap-1 mr-1"
                   title="Edit product"
                   href={"/products/edit/" + product._id}
                 >
@@ -70,7 +78,7 @@ const Products = () => {
                   Edit
                 </Link>
                 <Link
-                  className="bg-red-700 text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1"
+                  className="bg-red-700 text-white text-sm py-1 px-2 rounded-sm inline-flex gap-1 mr-1"
                   title="Delete product"
                   href={"/products/delete/" + product._id}
                 >
