@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { signOut } from "next-auth/react";
 
 export const Nav = ({ show }) => {
@@ -11,8 +11,10 @@ export const Nav = ({ show }) => {
 
   async function Logout() {
     await signOut();
+    sessionStorage.clear();
     await router.push("/");
 
+   
   }
 
   return (

@@ -57,7 +57,7 @@ const Products = ({}) => {
             <tr title={product.title} key={index}>
               <td>{product.title}</td>
               <td>
-              {categories.filter((c) => c._id === product.category)[0]?.name}
+                {console.log(JSON.stringify.categories.filter((c) => c._id == products.category)[0]?.name)}
               </td>
 
               <td className="flex justify-end">

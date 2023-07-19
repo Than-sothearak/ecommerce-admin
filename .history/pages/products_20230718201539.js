@@ -57,7 +57,7 @@ const Products = ({}) => {
             <tr title={product.title} key={index}>
               <td>{product.title}</td>
               <td>
-              {categories.filter((c) => c._id === product.category)[0]?.name}
+              {categories.filter((c) => c._id)[0]?.name}
               </td>
 
               <td className="flex justify-end">

@@ -1,27 +1,25 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, {useState} from "react";
 import { signOut } from "next-auth/react";
 
-export const Nav = ({ show }) => {
+export const Nav = ({show}) => {
   const inactiveLink = "flex gap-2 p-1";
   const activeLink = inactiveLink + " bg-highlight text-primary rounded-l-sm";
   const router = useRouter();
   const { pathname } = router;
-
-  async function Logout() {
+  
+  async function Logout () {
     await signOut();
-    await router.push("/");
+  await router.push('/');
 
+ 
+  sessionStorage.clear()
   }
 
+ 
   return (
-    <aside
-      className={
-        (show ? "left-0" : "-left-full") +
-        " top-0 text-gray-500 p-4 fixed w-full bg-white h-full md:static md:w-auto lg:static lg:w-auto transition-all"
-      }
-    >
+    <aside className={(show?'left-0':'-left-full')+" top-0 text-gray-500 p-4 fixed w-full bg-white h-full md:static md:w-auto lg:static lg:w-auto transition-all"}>
       <Link href={"/"} className="flex gap-2 mb-4 mr-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"

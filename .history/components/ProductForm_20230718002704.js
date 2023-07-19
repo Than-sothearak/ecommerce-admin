@@ -90,16 +90,17 @@ export default function ProductForm({
   const propertiesToFill = [];
   if (categories.length > 0 && category) {
     let selectCatInfo = categories.find(({ _id }) => _id === category);
-    propertiesToFill.push(...selectCatInfo.properties);
-    while (selectCatInfo?.parent?._id) {
-      const parentCat = categories.find(
-        ({ _id }) => _id === selectCatInfo.parent?._id
-      );
-      propertiesToFill.push(...parentCat.properties);
-      selectCatInfo = parentCat;
-    }
+    propertiesToFill.push(...selectCatInfo);
+    // while (selectCatInfo?.parent?._id) {
+    //   const parentCat = categories.find(
+    //     ({ _id }) => _id === selectCatInfo.parent?._id
+    //   );
+    //   propertiesToFill.push(...parentCat.properties);
+    //   selectCatInfo = parentCat;
+    // }
   }
   
+  console.log({propertiesToFill})
   return (
     <form onSubmit={createProdouct}>
       <label>Product name</label>

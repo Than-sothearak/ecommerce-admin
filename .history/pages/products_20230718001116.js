@@ -5,32 +5,42 @@ import { useEffect } from "react";
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
 
-const Products = ({}) => {
+const Products = ({
+
+}) => {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
 
-  const fatchData = async () => {
-    try {
-      setIsUploading(true);
-
-      await axios.get("/api/categories").then((result) => {
-        setCategories(result.data);
-      });
-      await axios.get("/api/products").then((res) => {
-        setProducts(res.data);
-      });
-    } catch (err) {
-      console.log = err;
-    }
-    setIsUploading(false);
-  };
   useEffect(() => {
+    const fatchData = async () => {
+      try {
+        setIsUploading(true);
+        const res = await axios.get("/api/products");
+        setProducts(res.data);
+
+        await axios.get("/api/categories").then((result) => {
+          setCategories(result.data);
+        });
+      } catch (err) {
+        console.log = err;
+      }
+      setIsUploading(false);
+    };
     fatchData();
   }, []);
 
+  
 
-  return (
+  const cat = (categories.find(c => c._id))
+  console.log(cat)
+  
+  const propertiesToFill = [];
+  if (products.length > 0 && cat._id) {
+    let selectCat = products.find(({ category }) => category === cat._id);
+    propertiesToFill.push(...selectCat.properties);
+  }
+    return (
     <Layout>
       <Link
         title="add new product"
@@ -56,10 +66,9 @@ const Products = ({}) => {
           {products.map((product, index) => (
             <tr title={product.title} key={index}>
               <td>{product.title}</td>
-              <td>
-              {categories.filter((c) => c._id === product.category)[0]?.name}
-              </td>
-
+              {product.category && (
+                <td>{product.category}</td>
+              )}
               <td className="flex justify-end">
                 <Link
                   className="bg-primary text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1"

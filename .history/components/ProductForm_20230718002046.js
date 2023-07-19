@@ -100,6 +100,7 @@ export default function ProductForm({
     }
   }
   
+  console.log(propertiesToFill)
   return (
     <form onSubmit={createProdouct}>
       <label>Product name</label>

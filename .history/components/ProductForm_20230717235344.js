@@ -99,7 +99,7 @@ export default function ProductForm({
       selectCatInfo = parentCat;
     }
   }
-  
+
   return (
     <form onSubmit={createProdouct}>
       <label>Product name</label>

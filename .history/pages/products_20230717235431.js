@@ -5,31 +5,40 @@ import { useEffect } from "react";
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
 
-const Products = ({}) => {
+const Products = ({
+  category: currentCategory,
+}) => {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState(currentCategory || "");
 
-  const fatchData = async () => {
-    try {
-      setIsUploading(true);
-
-      await axios.get("/api/categories").then((result) => {
-        setCategories(result.data);
-      });
-      await axios.get("/api/products").then((res) => {
-        setProducts(res.data);
-      });
-    } catch (err) {
-      console.log = err;
-    }
-    setIsUploading(false);
-  };
   useEffect(() => {
+    const fatchData = async () => {
+      try {
+        setIsUploading(true);
+        const res = await axios.get("/api/products");
+        setProducts(res.data);
+
+        await axios.get("/api/categories").then((result) => {
+          setCategories(result.data);
+        });
+      } catch (err) {
+        console.log = err;
+      }
+      setIsUploading(false);
+    };
     fatchData();
   }, []);
 
 
+  const catToFill = [];
+  if (products.length > 0 && category) {
+    let selectCatInfo = products.find(({ name }) => name === category);
+    catToFill.push(...selectCatInfo.name);
+  }
+  
+  console.log({catToFill})
   return (
     <Layout>
       <Link
@@ -48,18 +57,16 @@ const Products = ({}) => {
         <thead>
           <tr>
             <td className="font-bold">Product name</td>
-            <td></td>
-            <td></td>
+           
           </tr>
         </thead>
         <tbody>
           {products.map((product, index) => (
             <tr title={product.title} key={index}>
               <td>{product.title}</td>
-              <td>
-              {categories.filter((c) => c._id === product.category)[0]?.name}
-              </td>
-
+              {product.category && (
+                <td>{product.category}</td>
+              )}
               <td className="flex justify-end">
                 <Link
                   className="bg-primary text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1"
