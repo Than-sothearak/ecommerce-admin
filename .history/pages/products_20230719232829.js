@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import { useEffect } from "react";
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
+import categories from "./categories";
 
 
 const Products = ({}) => {
@@ -47,17 +48,28 @@ const Products = ({}) => {
         <thead>
           <tr>
             <td className="font-bold">Product name</td>
-
+<<<<<<< HEAD
+            <td></td>
+            <td></td>
+=======
             <td className="font-bold">Category</td>
             <td className="font-bold">In stock</td>
+>>>>>>> 088a960ddbdf36c97594fc1fa176a4be5bdb81fe
           </tr>
         </thead>
         <tbody>
           {products.map((product, index) => (
             <tr title={product.title} key={index}>
               <td>{product.title}</td>
+<<<<<<< HEAD
+              <td>
+              {categories.filter((c) => c._id === product.category)[0]?.name}
+              </td>
+
+=======
               <td>{categories.filter(c => c._id == product.category)[0]?.name}</td>
               <td >{product.stock ? product.stock : <h5 className="text-gray-400">Out of stock</h5>}</td>
+>>>>>>> 088a960ddbdf36c97594fc1fa176a4be5bdb81fe
               <td className="flex justify-end">
                 <Link
                   className="bg-primary text-white text-sm py-1 px-2 rounded-sm inline-flex gap-1 mr-1"

@@ -8,6 +8,7 @@ export default function ProductForm({
   _id,
   title: currentTitle,
   description: currentDesc,
+  stock: currentStock,
   price: currntPrice,
   images: currentImages,
   category: currentCategory,
@@ -18,6 +19,7 @@ export default function ProductForm({
   const [productProperties, setProductProperties] = useState(currentProductProps || {});
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDesc || "");
+  const [stock, setStock] = useState(currentStock || '')
   const [price, setPrice] = useState(currntPrice || "");
   const [images, setImages] = useState(currentImages || []);
   const [goToProduct, setGoToProduct] = useState(false);
@@ -35,6 +37,7 @@ export default function ProductForm({
     const data = {
       title,
       description,
+      stock,
       price,
       images,
       category,
@@ -46,7 +49,7 @@ export default function ProductForm({
       alert("updated!");
     } else {
       //Create
-      if (title === "" || description === "" || price === "") {
+      if (title === "" || description === "" || price === "" || stock === "") {
         alert("please input value");
       } else {
         await axios.post("/api/products", data);
@@ -199,6 +202,13 @@ export default function ProductForm({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       ></textarea>
+      <label>Stock</label>
+      <input
+        type="number"
+        placeholder="quantity"
+        value={stock}
+        onChange={(e) => setStock(e.target.value)}
+      ></input>
       <label>Price</label>
       <input
         type="number"

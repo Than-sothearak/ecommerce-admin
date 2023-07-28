@@ -13,18 +13,15 @@ export const Nav = ({ show }) => {
   async function Logout() {
     await signOut();
     await router.push("/");
+
   }
 
   return (
-    <aside
-      className={
-        (show ? "left-0" : "-left-full") +
-        " top-0 text-gray-500 p-4 fixed w-full bg-white h-full md:static md:w-auto lg:static lg:w-auto transition-all"
-      }
-    >
-      <div className="mb-4 mr-4">
-        <Logo />
-      </div>
+
+    <aside className={(show?'left-0':'-left-full')+" top-0 text-gray-500 p-4 fixed w-full bg-white h-full md:static md:w-auto lg:static lg:w-auto transition-all"}>
+     <div className="mb-4 mr-4">
+     <Logo />
+     </div>
 
       <nav className="flex flex-col gap-2">
         <Link

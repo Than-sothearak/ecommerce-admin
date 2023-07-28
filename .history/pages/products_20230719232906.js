@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import { useEffect } from "react";
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
+import categories from "./categories";
 
 
 const Products = ({}) => {
