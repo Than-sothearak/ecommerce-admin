@@ -25,7 +25,7 @@ const Orders = ({swal}) => {
     swal
       .fire({
         title: "Are you sure?",
-        text: `Do you want to delete ${order._id}?`,
+        text: `Do you want to delete ${<p className="color-red">{order._id}</p>}?`,
         showCancelButton: true,
         confirmButtonText: "Yes, Delete!",
         confirmButtonColor: "#d55",
@@ -40,8 +40,7 @@ const Orders = ({swal}) => {
         }
       });
   }
-
-
+  
   return (
     <Layout>
       <h1>Orders</h1>
@@ -50,7 +49,6 @@ const Orders = ({swal}) => {
           <BeatLoader />
         </div>
       )}
-       <div>QUERY RESULTS:{orders.length}</div>
       <table className="basic">
         <thead className="border ">
           <tr>
@@ -59,10 +57,8 @@ const Orders = ({swal}) => {
             <th>Product</th>
           </tr>
         </thead>
-      
         <tbody className="border">
-       
-
+ 
           {orders.length > 0 &&
             orders.map((order) => (
               <tr key={order._id} className="border">

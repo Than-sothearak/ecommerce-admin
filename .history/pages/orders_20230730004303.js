@@ -51,6 +51,7 @@ const Orders = ({swal}) => {
         </div>
       )}
        <div>QUERY RESULTS:{orders.length}</div>
+        {!orders?.length > 0 && <div className="p-3 text-center border-collapse">Your order is empty</div>}
       <table className="basic">
         <thead className="border ">
           <tr>

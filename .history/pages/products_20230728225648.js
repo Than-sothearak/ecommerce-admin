@@ -56,8 +56,8 @@ const Products = ({}) => {
             <tr title={product.title} key={index}>
               <td className="border">{product.title}</td>
             
-              <td className="text-center h-8 border">{categories.filter(c => c._id == product.category)[0]?.name}  <td className="text-center"><img src={product.images[0]} className="w-8 h-8"/></td></td>
-              <td className="m-0-auto border">
+              <td className="text-center h-8">{categories.filter(c => c._id == product.category)[0]?.name}  <td className="text-center"><img src={product.images[0]} className="w-8 h-8"/></td></td>
+              <td className="flex justify-end">
                 <Link
                   className="bg-primary text-white text-sm py-1 px-2 rounded-sm inline-flex gap-1 mr-1"
                   title="Edit product"

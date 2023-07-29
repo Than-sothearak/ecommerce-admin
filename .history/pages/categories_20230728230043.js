@@ -261,7 +261,7 @@ function Categories({ swal }) {
                     <button
                       title="Delete category"
                       onClick={() => deleteCategory(category)}
-                      className="flex btn-red gap-1 mr-1 items-center"
+                      className="flex btn-delete gap-1 mr-1 items-center"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -269,7 +269,7 @@ function Categories({ swal }) {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-4 h-4 "
+                        className="w-4 h-4  bg-red"
                       >
                         <path
                           strokeLinecap="round"

@@ -40,9 +40,15 @@ const Orders = ({swal}) => {
         }
       });
   }
-
-
-  return (
+  const checkOrderEmpty =  () => {
+    if (orders.length === 0 ) {
+      return (
+        <h1>Emplye</h1>
+      )
+    }
+    return
+  }
+   (
     <Layout>
       <h1>Orders</h1>
       {isUploading && (
@@ -50,7 +56,6 @@ const Orders = ({swal}) => {
           <BeatLoader />
         </div>
       )}
-       <div>QUERY RESULTS:{orders.length}</div>
       <table className="basic">
         <thead className="border ">
           <tr>
@@ -59,10 +64,8 @@ const Orders = ({swal}) => {
             <th>Product</th>
           </tr>
         </thead>
-      
         <tbody className="border">
-       
-
+ 
           {orders.length > 0 &&
             orders.map((order) => (
               <tr key={order._id} className="border">

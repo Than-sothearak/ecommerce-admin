@@ -2,19 +2,19 @@ import { mongooseConnect } from "@/lib/mongoose";
 import { Order } from "@/models/Order";
 
 export default async function handler (req, res) {
-    const { method } = req;
     await mongooseConnect();
-    
-    if (method === "GET") {
-        res.json(await Order.find().sort({createdAt: -1}));
-    }
-  
+    res.json(await Order.find().sort({createdAt: -1}));
 
-    if (method === "DELETE") {
+    if (method.req === "DELETE") {
         const { _id } = req.query;
         await Order.deleteOne({ _id });
         res.json("ok");
       }
-  
- 
+
+    // if(method === "DELETE") {
+    //     if (req.query?.id) {
+    //       await Product.deleteOne({_id:req.query?.id});
+    //       res.json(true);
+    //     }
+    //   }
 }

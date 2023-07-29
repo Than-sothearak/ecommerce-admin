@@ -4,17 +4,13 @@ import { Order } from "@/models/Order";
 export default async function handler (req, res) {
     const { method } = req;
     await mongooseConnect();
-    
-    if (method === "GET") {
-        res.json(await Order.find().sort({createdAt: -1}));
-    }
-  
+    res.json(await Order.find().sort({createdAt: -1}));
 
     if (method === "DELETE") {
         const { _id } = req.query;
-        await Order.deleteOne({ _id });
+        await Category.deleteOne({ _id });
         res.json("ok");
       }
-  
- 
+
+
 }

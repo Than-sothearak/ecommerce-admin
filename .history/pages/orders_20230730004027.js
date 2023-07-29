@@ -50,7 +50,6 @@ const Orders = ({swal}) => {
           <BeatLoader />
         </div>
       )}
-       <div>QUERY RESULTS:{orders.length}</div>
       <table className="basic">
         <thead className="border ">
           <tr>
@@ -59,7 +58,7 @@ const Orders = ({swal}) => {
             <th>Product</th>
           </tr>
         </thead>
-      
+        {!orders?.length > 0 && <div className="p-3 text-center border-collapse">Your order is empty</div>}
         <tbody className="border">
        
 

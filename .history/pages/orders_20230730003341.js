@@ -40,9 +40,11 @@ const Orders = ({swal}) => {
         }
       });
   }
-
-
-  return (
+  const checkOrderEmpty = () => {
+   
+    return
+  }
+   (
     <Layout>
       <h1>Orders</h1>
       {isUploading && (
@@ -50,7 +52,6 @@ const Orders = ({swal}) => {
           <BeatLoader />
         </div>
       )}
-       <div>QUERY RESULTS:{orders.length}</div>
       <table className="basic">
         <thead className="border ">
           <tr>
@@ -59,12 +60,9 @@ const Orders = ({swal}) => {
             <th>Product</th>
           </tr>
         </thead>
-      
         <tbody className="border">
-       
-
-          {orders.length > 0 &&
-            orders.map((order) => (
+ 
+          {orders.length > 0 ? orders.map((order) => (
               <tr key={order._id} className="border">
                 <td className="border">{(new Date(order.createdAt)).toLocaleString()}
                 </td>
@@ -105,7 +103,8 @@ const Orders = ({swal}) => {
                     </button>
               </tr>
               
-            ))}
+            )): <h1>No order</h1>
+            }
         </tbody>
       </table>
     </Layout>

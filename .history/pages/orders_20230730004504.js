@@ -19,7 +19,7 @@ const Orders = ({swal}) => {
   }
   useEffect(() => {
     fetchOrderData ();
-  }, []);
+  }, [orders]);
 
   function deleteCategory(order) {
     swal
