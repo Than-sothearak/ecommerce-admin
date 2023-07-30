@@ -55,7 +55,6 @@ const Orders = ({swal}) => {
         <thead className="border ">
           <tr>
             <th>Date</th>
-            <th>Paid</th>
             <th>Recipient</th>
             <th>Product</th>
           </tr>
@@ -70,7 +69,7 @@ const Orders = ({swal}) => {
                 <td className="border">{(new Date(order.createdAt)).toLocaleString()}
                 </td>
                 <td className={order.paid ? 'text-green-600' : 'text-red-500'}>
-                  {order.paid ? "Paid" : 'No'}
+                  {order.paid ? "paided" : 'No'}
                 </td>
                 <td className="border">
                   {order.name}, {order.email}, {order.city}, <br />{order.streetAddress}
