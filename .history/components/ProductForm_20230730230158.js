@@ -101,6 +101,8 @@ export default function ProductForm({
       propertiesToFill.push(...parentCat.properties);
       selectCatInfo = parentCat;
     }
+  } else {
+    return
   }
   
   return (
