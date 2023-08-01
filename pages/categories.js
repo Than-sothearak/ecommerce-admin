@@ -231,6 +231,7 @@ function Categories({ swal }) {
             {categories.length > 0 &&
               categories.map((category) => (
                 <tr 
+                className="hover:bg-blue-100 cursor-pointer"
                 title={category.name}
                 key={category.name}>
                   <td>{category.name}</td>
