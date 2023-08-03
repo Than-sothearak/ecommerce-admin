@@ -91,15 +91,17 @@ export default function ProductForm({
     });
   }
   const propertiesToFill = [];
+
   if (categories.length > 0 && category) {
-    let selectCatInfo = categories?.find(({ _id }) => _id === category);
-    propertiesToFill.push(...selectCatInfo?.properties);
-    while (selectCatInfo?.parent?._id) {
+    let selectCategory = categories?.find(({ _id }) => _id === category);
+    propertiesToFill.push(...selectCategory?.properties);
+    while (selectCategory?.parent?._id) {
+      //we want to find parent id of child category 
       const parentCat = categories.find(
-        ({ _id }) => _id === selectCatInfo.parent?._id
+        ({ _id }) => _id === selectCategory.parent?._id
       );
       propertiesToFill.push(...parentCat.properties);
-      selectCatInfo = parentCat;
+      selectCategory = parentCat;
     }
   }
   
@@ -132,14 +134,17 @@ export default function ProductForm({
             </option>
           ))}
       </select>
+      <hr className="my-4"/>
+      <p className="mb-2">Properties</p>
       {propertiesToFill.length > 0 &&
         propertiesToFill.map((property) => (
           <div
             title="select property"
             key={property.name}
-            className="flex gap-1"
+            className="gap-1"
+    
           >
-            <div>{property.name}</div>
+            <label>{property.name}</label>
             <select
               value={productProperties[property.name]}
               onChange={(e) =>
