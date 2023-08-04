@@ -3,6 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 import { withSwal } from "react-sweetalert2";
+import { TbDragDrop2 } from 'react-icons/tb';
+
 
 function Categories({ swal }) {
   const [editedCategory, setEditedCategory] = useState(null);
@@ -11,7 +13,8 @@ function Categories({ swal }) {
   const [categories, setCategories] = useState([]);
   const [properties, setProperties] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
-
+   
+  console.log(categories)
   const fetchCategoryData = async () => {
     try {
       setIsUploading(true);
@@ -28,6 +31,7 @@ function Categories({ swal }) {
     const data = {
       name,
       parentCategory,
+      categories,
       properties:properties.map(p => ({
         name:p.name,
         values:p.values.split(','),
@@ -58,7 +62,7 @@ function Categories({ swal }) {
       values:values.join(',')
     })));
   }
-  
+
   function deleteCategory(category) {
     swal
       .fire({
@@ -218,25 +222,28 @@ function Categories({ swal }) {
           <BeatLoader />
         </div>
       )}
+     
       {!editedCategory && (
-        <table className="basic mt-4">
+          
+             <table className="basic mt-4">
           <thead>
             <tr>
               <td className="font-bold">Category</td>
-              <td className="font-bold">Parent Category</td>
-              <td></td>
             </tr>
           </thead>
           <tbody>
+   
             {categories.length > 0 &&
               categories.map((category) => (
+
                 <tr 
 
                 className="border"
 
                 title={category.name}
                 key={category.name}>
-                  <td className="border">{category.name}</td>
+          
+                  <td className="flex items-center gap-2"><TbDragDrop2 color="gray" size={24} className="mr-5"/>{category.name}</td>
                   <td className="border">{category.parent?.name}</td>
                   <td className="flex justify-end">
                     <button
@@ -283,9 +290,14 @@ function Categories({ swal }) {
                     </button>
                   </td>
                 </tr>
+               
               ))}
+                
           </tbody>
         </table>
+     
+       
+       
       )}
     </Layout>
   );

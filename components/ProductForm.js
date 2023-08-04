@@ -92,7 +92,7 @@ export default function ProductForm({
   }
   const propertiesToFill = [];
 
-  if (categories.length > 0 && category) {
+  if (categories?.length > 0 && category) {
     let selectCategory = categories?.find(({ _id }) => _id === category);
     propertiesToFill.push(...selectCategory?.properties);
     while (selectCategory?.parent?._id) {
