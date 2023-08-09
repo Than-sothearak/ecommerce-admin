@@ -14,7 +14,6 @@ function Categories({ swal }) {
   const [properties, setProperties] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
    
-  console.log(categories)
   const fetchCategoryData = async () => {
     try {
       setIsUploading(true);

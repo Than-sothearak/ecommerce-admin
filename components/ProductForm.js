@@ -94,6 +94,7 @@ export default function ProductForm({
 
   if (categories?.length > 0 && category) {
     let selectCategory = categories?.find(({ _id }) => _id === category);
+   
     propertiesToFill.push(...selectCategory?.properties);
     while (selectCategory?.parent?._id) {
       //we want to find parent id of child category 
@@ -103,7 +104,9 @@ export default function ProductForm({
       propertiesToFill.push(...parentCat.properties);
       selectCategory = parentCat;
     }
+    
   }
+ 
   
   return (
     <form onSubmit={createProdouct}>
