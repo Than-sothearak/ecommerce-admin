@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Footer } from "./Footer";
 import Logo from "./Logo";
+import Login from "./Login";
 
 export default function Layout({ children }) {
   const { data: session } = useSession();
@@ -15,16 +16,9 @@ export default function Layout({ children }) {
 
   if (!session) {
     return (
-      <div className="bg-gray-200  w-screen h-screen flex items-center">
-        <div className="text-center w-full flex justify-center">
-          <button
-            onClick={() => signIn("google")}
-            className="bg-white p-2 px-4 rounded-lg flex"
-          >
-            <FcGoogle className="w-6 h-6 mr-2" />
-            Continute with Google
-          </button>
-        </div>
+      <div className="bg-gray-200">
+        <Login />
+       
       </div>
     );
   }

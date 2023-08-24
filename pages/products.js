@@ -24,6 +24,7 @@ const Products = ({}) => {
     }
     setIsUploading(false);
   };
+  
   useEffect(() => {
     fatchData();
   }, []);
