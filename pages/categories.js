@@ -3,8 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 import { withSwal } from "react-sweetalert2";
-import { TbDragDrop2 } from 'react-icons/tb';
-
+import { TbDragDrop2 } from "react-icons/tb";
 
 function Categories({ swal }) {
   const [editedCategory, setEditedCategory] = useState(null);
@@ -13,7 +12,7 @@ function Categories({ swal }) {
   const [categories, setCategories] = useState([]);
   const [properties, setProperties] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
-   
+
   const fetchCategoryData = async () => {
     try {
       setIsUploading(true);
@@ -25,15 +24,15 @@ function Categories({ swal }) {
     setIsUploading(false);
   };
 
-  async function saveCategory(ev){
+  async function saveCategory(ev) {
     ev.preventDefault();
     const data = {
       name,
       parentCategory,
       categories,
-      properties:properties.map(p => ({
-        name:p.name,
-        values:p.values.split(','),
+      properties: properties.map((p) => ({
+        name: p.name,
+        values: p.values.split(","),
       })),
     };
     if (editedCategory) {
@@ -43,23 +42,24 @@ function Categories({ swal }) {
       //Create category
       await axios.post("/api/categories", data);
     }
-    
+
     setEditedCategory(null);
-    setParentCategory('');
+    setParentCategory("");
     setName("");
     setProperties([]);
     fetchCategoryData();
   }
-  
+
   function editCategory(category) {
     setEditedCategory(category);
     setName(category.name);
     setParentCategory(category.parent?._id);
     setProperties(
-      category.properties.map(({name, values}) => ({
-      name,
-      values:values.join(',')
-    })));
+      category.properties.map(({ name, values }) => ({
+        name,
+        values: values.join(","),
+      }))
+    );
   }
 
   function deleteCategory(category) {
@@ -81,13 +81,19 @@ function Categories({ swal }) {
         }
       });
   }
-  
- function addProperty() {
-    setProperties(prev => {
-      return [...prev, {name:'',values:''}];
+
+  function addProperty() {
+    setProperties((prev) => {
+      return [
+        ...prev,
+        {
+          name: "",
+          values: "",
+        },
+      ];
     });
   }
- 
+
   function handlePropertyNameChange(index, property, newName) {
     setProperties((prev) => {
       const properties = [...prev];
@@ -95,7 +101,7 @@ function Categories({ swal }) {
       return properties;
     });
   }
-  
+
   function handlePropertyValueChange(index, property, newValues) {
     setProperties((prev) => {
       const properties = [...prev];
@@ -103,7 +109,7 @@ function Categories({ swal }) {
       return properties;
     });
   }
-  
+
   function removeProperty(index) {
     setProperties((prev) => {
       return [...prev].filter((property, indexRemove) => {
@@ -111,7 +117,7 @@ function Categories({ swal }) {
       });
     });
   }
-  
+
   useEffect(() => {
     fetchCategoryData();
   }, []);
@@ -221,28 +227,26 @@ function Categories({ swal }) {
           <BeatLoader />
         </div>
       )}
-     
+
       {!editedCategory && (
-          
-             <table className="basic mt-4">
+        <table className="basic mt-4">
           <thead>
             <tr>
               <td className="font-bold">Category</td>
             </tr>
           </thead>
           <tbody>
-   
             {categories.length > 0 &&
               categories.map((category) => (
-
-                <tr 
-
-                className="border"
-
-                title={category.name}
-                key={category.name}>
-          
-                  <td className="flex items-center gap-2"><TbDragDrop2 color="gray" size={24} className="mr-5"/>{category.name}</td>
+                <tr
+                  className="border"
+                  title={category.name}
+                  key={category.name}
+                >
+                  <td className="flex items-center gap-2">
+                    <TbDragDrop2 color="gray" size={24} className="mr-5" />
+                    {category.name}
+                  </td>
                   <td className="border">{category.parent?.name}</td>
                   <td className="flex justify-end">
                     <button
@@ -289,14 +293,9 @@ function Categories({ swal }) {
                     </button>
                   </td>
                 </tr>
-               
               ))}
-                
           </tbody>
         </table>
-     
-       
-       
       )}
     </Layout>
   );
