@@ -23,8 +23,8 @@ export default function Layout({ children }) {
     );
   }
   return (
-    <div className="min-h-screen">
-      <div className="block md:hidden flex items-center">
+    <div className="min-h-screen ml-2">
+      <div className="md:hidden flex items-center">
         <button onClick={() => handleToggle()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
