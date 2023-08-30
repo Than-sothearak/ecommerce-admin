@@ -6,6 +6,7 @@ import { withSwal } from "react-sweetalert2";
 const Setting = ({ swal }) => {
   const [products, setProducts] = useState([]);
   const [featuredId, setFeaturedId] = useState("");
+  const [shippingFee, setShippingFee] = useState("");
 
   async function saveSetting(e) {
     e.preventDefault();
@@ -13,7 +14,12 @@ const Setting = ({ swal }) => {
         name: 'featuredProductId',
         value: featuredId,
       }
+    const shipping = {
+      name: 'shippingFee',
+      value: shippingFee,
+    }
     await axios.put("/api/setting", data);
+    await axios.put("/api/setting", shipping);
     swal.fire({
       title: 'Updated',
       icon: 'success',
@@ -26,6 +32,9 @@ const Setting = ({ swal }) => {
 
       axios.get('/api/setting?name=featuredProductId').then(res => {
         setFeaturedId(res.data.value)
+      })
+      axios.get('/api/setting?name=shippingFee').then(res => {
+        setShippingFee(res.data?.value)
       })
   }, []);
 
@@ -47,6 +56,16 @@ const Setting = ({ swal }) => {
               </option>
             ))}
           </select>
+          
+        </div>
+        <label>Shipping fee in USD</label>
+        <div className="flex gap-1">
+          <input 
+          value={shippingFee}
+          onChange={e => setShippingFee(e.target.value)}
+          type="number" 
+          placeholder="shipping fee"/>
+          
         </div>
 
         <button
