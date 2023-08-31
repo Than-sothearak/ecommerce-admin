@@ -232,7 +232,7 @@ const Products = ({}) => {
           </table>
           <footer className="mt-5 flex gap-2 items-center justify-between">
           <div className="flex gap-6">
-        <button disabled={ page=== 0 } onClick={handlePrevious}><BsFillArrowLeftSquareFill size={32} color= {page === 0  ? '#DCDCDC' : '#808080'} /></button>
+        <button disabled={ page=== 0 } onClick={handlePrevious}><BsFillArrowLeftSquareFill size={32} color= {page === 0  ? '#808080' : '#DCDCDC'} /></button>
         <div className="flex gap-1 text-gray-400 items-center">
           Page 
           <p className="text-gray-500 font-bold">{page +1}</p> of <p className="text-gray-500 font-bold">{Math.ceil(pageCount)}</p></div>
