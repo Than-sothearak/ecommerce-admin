@@ -1,3 +1,4 @@
+import Dashboard from "@/components/Dashboard";
 import Layout from "@/components/Layout";
 import { useSession} from "next-auth/react";
 export default function Home() {
@@ -14,8 +15,9 @@ export default function Home() {
           />
           <span className="py-1 px-2">{session?.user?.name}</span>
         </div>
-        
+      
       </div>
+      <Dashboard />
     </Layout>
   );
 }

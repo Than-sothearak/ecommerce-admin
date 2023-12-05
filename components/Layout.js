@@ -3,6 +3,8 @@ import { Nav } from "./Nav";
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Footer } from "./Footer";
+import Logo from "./Logo";
+import Login from "./Login";
 
 export default function Layout({ children }) {
   const { data: session } = useSession();
@@ -14,22 +16,15 @@ export default function Layout({ children }) {
 
   if (!session) {
     return (
-      <div className="bg-gray-200  w-screen h-screen flex items-center">
-        <div className="text-center w-full flex justify-center">
-          <button
-            onClick={() => signIn("google")}
-            className="bg-white p-2 px-4 rounded-lg flex"
-          >
-            <FcGoogle className="w-6 h-6 mr-2" />
-            Continute with Google
-          </button>
-        </div>
+      <div className="bg-gray-200">
+        <Login />
+       
       </div>
     );
   }
   return (
-    <div className="min-h-screen">
-      <div className="block md:hidden">
+    <div className="min-h-screen ml-2">
+      <div className="md:hidden flex items-center">
         <button onClick={() => handleToggle()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -46,12 +41,16 @@ export default function Layout({ children }) {
             />
           </svg>
         </button>
+        <div className="flex grow justify-center p-4 mr-6">
+        <Logo />
+        </div>
+       
       </div>
 
       <div className="bg-gray-200 flex min-h-screen">
         <Nav show={showNav} />
 
-        <div className="bg-white flex-grow mt-2 mb-2 mr-2 rounded-lg p-4">
+        <div className="bg-white flex-grow p-4">
           {children}
         </div>
       </div>
