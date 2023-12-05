@@ -249,7 +249,6 @@ function Categories({ swal }) {
                   key={category.name}
                 >
                   <td className="flex items-center gap-2">
-                    <TbDragDrop2 color="gray" size={24} className="mr-5" />
                     {category.name}
                   </td>
                   <td className="border">{category.parent?.name}</td>
