@@ -10,8 +10,10 @@ export const Nav = ({show}) => {
   const { pathname } = router;
   
   async function Logout () {
-  await router.push('/');
-  await signOut();
+    await signOut();
+    await sessionStorage.clear();
+    window.document.cookie.clear();
+    await router.push('/');
   }
 
  

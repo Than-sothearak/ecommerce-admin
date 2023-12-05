@@ -1,8 +1,10 @@
 import Layout from "@/components/Layout";
+import { requestState } from "@/lib/callback";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 import { withSwal } from "react-sweetalert2";
+// import { }
 
 function Categories({ swal }) {
   const [editedCategory, setEditedCategory] = useState(null);
@@ -11,6 +13,9 @@ function Categories({ swal }) {
   const [categories, setCategories] = useState([]);
   const [properties, setProperties] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+
+  const getCat = () => requestState("/api/categories", setCategories)
+  
 
   const fetchCategoryData = async () => {
     try {
@@ -110,7 +115,7 @@ function Categories({ swal }) {
   }
   
   useEffect(() => {
-    fetchCategoryData();
+    getCat()
   }, []);
 
   return (

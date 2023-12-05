@@ -5,23 +5,41 @@ import { useEffect } from "react";
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
 
+import { requestState } from "@/lib/callback";
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  
+  const getCat = async () => await requestState("/api/categories", setCategories)
+  const getPro = async () => await requestState("/api/products", setProducts)
+  
+  // const getCat  = async () => await axios.get("/api/categories").then(result=>{
+  //   setCategories(result.data)
+  //   localStorage.setItem("categories", JSON.stringify(result.data))
+  // });
+  // const getPro = async () => await axios.get("/api/products").then(result=>{
+  //   setProducts(result.data);
+  //   localStorage.setItem("products", JSON.stringify(result.data))
+  // });
+  // const fatchData = () => {
+  //   try {
+  //     getCat()
+  //     getPro()
+  //   } catch (err) {
+  //     console.log = err;
+  //   }
+  // };
 
   useEffect(() => {
-    const fatchData = async () => {
-      try {
-        setIsUploading(true);
-        const res = await axios.get("/api/products");
-        setProducts(res.data);
-      } catch (err) {
-        console.log = err;
-      }
-      setIsUploading(false);
-    };
-    fatchData();
+    setIsUploading(true);
+    getCat()
+    getPro()
+    setIsUploading(false);
   }, []);
+
   return (
     <Layout>
       <Link
@@ -47,6 +65,7 @@ const Products = () => {
           {products.map((product, index) => (
             <tr title={product.title} key={index}>
               <td>{product.title}</td>
+              <td>{categories.filter(e=>e._id==product.category)[0]?.name??"Undefind"}</td>
               <td className="flex justify-end">
                 <Link
                   className="bg-primary text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1"
