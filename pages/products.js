@@ -14,6 +14,8 @@ const Products = ({}) => {
   const [products, setProducts] = useState([]);
   const [searchProducts, setSearchProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [catId, setCatId] = useState('')
+  const [selectedCheckbox, setSelectedCheckbox] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [inputs, setInputs] = useState("");
   const [page, setPage] = useState(0);
@@ -32,12 +34,23 @@ const Products = ({}) => {
           setPage(0);
           setIsUploading(false);
         });
-      } else {
+
+      } else if (catId === '') {
+
         const ressult = await axios.get("/api/categories");
         setCategories(ressult.data);
         const res = await axios.get("/api/products?page=" + page);
         setProducts(res.data.items);
         setPageCount(res.data.pagination.countPage);
+
+      } else if (catId.length > 1) {
+
+        const ressult = await axios.get("/api/categories");
+        setCategories(ressult.data);
+        const res = await axios.get("/api/productsfilter?category=" + catId);
+        setProducts(res.data.items);
+        setPageCount(res.data.pagination.countPage);
+
       }
     } catch (err) {
       console.log = err;
@@ -62,8 +75,16 @@ const Products = ({}) => {
   }
   useEffect(() => {
     fatchData();
-  }, [inputs, page]);
 
+  }, [inputs, page, catId]);
+  
+  const handleChanged = (value) => {
+     setCatId((prev) => (prev === value ? '' : value));
+  }
+
+
+  const mainCats = categories.filter((c) => !c.parent);
+  
   return (
     <Layout>
       <Link
@@ -73,14 +94,34 @@ const Products = ({}) => {
       >
         Add new product
       </Link>
-      <div className="my-4 flex border border-gray-300 justify-center items-center rounded-md">
+      <div className="my-4 flex border w-full border-gray-300 justify-center items-center rounded-md">
         <input
           onChange={(e) => setInputs(e.target.value)}
           type="text"
           placeholder="search products"
-          className="border-none outline-none"
+          className="w- full border-none outline-none bg-transparent"
         />
         <BsSearch className="mr-4" />
+      </div>
+      <div className="w-full">
+        <p>Filter by categories</p>
+
+        <div className="flex flex-wrap gap-5 mt-2 mb-2">
+          { mainCats.map((c) => (
+            <div className="flex align-bottom gap-2 w-auto" key={c._id}>
+            <div onChange={(e) => handleChanged(e.target.value)}>
+              <input 
+              type="checkbox" 
+              value={c._id} 
+              checked={catId === c._id}
+              className="w-4 h-4" />
+            </div>
+            <div>
+              <p>{c.name}</p>
+            </div>
+          </div>
+          ))}
+        </div>
       </div>
       {isUploading && (
         <div className="flex justify-center">
@@ -100,6 +141,7 @@ const Products = ({}) => {
             <tbody>
               {searchProducts.map((product, index) => (
                 <tr title={product.title} key={index}>
+
                   <td className="border">{product.title}</td>
 
                   <td className="text-center h-8 border">
@@ -179,6 +221,7 @@ const Products = ({}) => {
           <table className="basic mt-2">
             <thead>
               <tr>
+                <td className="font-bold">No</td>
                 <td className="font-bold">Product name</td>
                 <td className="font-bold">Image</td>
                 <td className="font-bold">Category</td>
@@ -188,6 +231,8 @@ const Products = ({}) => {
             <tbody>
               {products.map((product, index) => (
                 <tr title={product.title} key={index}>
+                  <td className="border">{index}</td>
+
                   <td className="border">{product.title}</td>
 
                   <td className="text-center w-8 h-8 border">
@@ -251,9 +296,7 @@ const Products = ({}) => {
               <button disabled={page === 0} onClick={handlePrevious}>
                 <BsFillArrowLeftSquareFill
                   size={32}
-                  color={
-                    page === Math.ceil(pageCount) - 1 ? "#808080" : "#DCDCDC"
-                  }
+                  color={page === 0 ? "#DCDCDC" : "#808080"}
                 />
               </button>
               <div className="flex gap-1 text-gray-400 items-center">
