@@ -14,12 +14,13 @@ export default async function handler(req, res) {
     const productQuery = {};
 
     const count = await Product.estimatedDocumentCount(productQuery);
-
+   
     if (phrase) {
       productQuery["$or"] = [
         { title: { $regex: phrase, $options: "i" } },
         { desciption: { $regex: phrase, $options: "i" } },
       ];
+
      
       const items = (await Product
         .find(productQuery)

@@ -14,7 +14,7 @@ import { CardOrder } from "@/components/CardOrder";
 import { CartContext } from "@/components/context/CartContext";
 
 const PosPage = () => {
-  const { addProduct } = useContext(CartContext);
+  const { addProduct, cartProducts } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [searchProducts, setSearchProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -78,6 +78,13 @@ const PosPage = () => {
   const handleChange = (e) => {
     setInputs(e.target.value);
   };
+
+  function countQty (_id, stock) {
+    const count = cartProducts?.filter(id => id === _id)
+    return stock - count?.length;
+  }
+
+
   return (
     <Layout>
       <div className="">
@@ -96,37 +103,50 @@ const PosPage = () => {
                 </div>
               )}
               {inputs.length > 2 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 mt-5 ">
-                  {searchProducts.map((p) => (
-                   <div
-                   onClick={() => addProduct(p._id, p.title)}
-                   key={p._id}
-                   className="p-2 bg-slate-100 rounded-md flex flex-col items-center justify-around cursor-pointer"
-                 >
-                   <div className="felx justify-center">
-                     <img src={p.images[0]} className="w-20 h-20" />
-                   </div>
+                <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-4 mt-5">
+                {searchProducts.map((p) => (
+                  <div  key={p._id} className="border rounded-md" title={countQty(p._id, p.stock) <= 0 ? "Product out of stock" : "Can process"}>
+                    <button
+                    type="btton"
+                    disabled={countQty(p._id, p.stock) <= 0}
+                    onClick={() => addProduct(p._id, p.title)}
+                    
+                    className={(countQty(p._id, p.stock) <= 0 ? "cursor-not-allowed opacity-20" : "cursor-pointer")+" w-full p-2 bg-slate-100 rounded-md flex flex-col items-center justify-around"}
+                  >
+                    <div className="felx justify-center">
+                      <img src={p.images[0]} className="w-20 h-20" />
+                    </div>
+                    <div 
+                    className="p-2 bg-slate-300 text-sm rounded-md mt-2 text-slate-700">
+                      <p>Quantity:{countQty(p._id, p.stock)}</p></div>
 
-                   <div className="flex m-x-4 flex-col justify-center text-center gap-y-2 mt-2">
-                     <p className="h-11 text-ellipsis overflow-hidden text-sm">
-                       {p.title}
-                     </p>
-                     <p className="font-bold">{p.price}$</p>
-                   </div>
-                 </div>
-                  ))}
-                </div>
+                    <div className="flex m-x-4 flex-col justify-center text-center gap-y-2 mt-2">
+                      <p className="h-11 text-ellipsis overflow-hidden text-sm">
+                        {p.title}
+                      </p>
+                      <p className="font-bold">{p.price}$</p>
+                    </div>
+                  </button>
+                  </div>
+                ))}
+              </div>
               ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-4 mt-5">
                   {products.map((p) => (
-                    <div
+                    <div  key={p._id} className="border rounded-md" title={countQty(p._id, p.stock) <= 0 ? "Product out of stock" : "Can process"}>
+                      <button
+                      type="btton"
+                      disabled={countQty(p._id, p.stock) <= 0}
                       onClick={() => addProduct(p._id, p.title)}
-                      key={p._id}
-                      className="p-2 bg-slate-100 rounded-md flex flex-col items-center justify-around cursor-pointer"
+                      
+                      className={(countQty(p._id, p.stock) <= 0 ? "cursor-not-allowed opacity-20" : "cursor-pointer")+" w-full p-2 bg-slate-100 rounded-md flex flex-col items-center justify-around "}
                     >
                       <div className="felx justify-center">
                         <img src={p.images[0]} className="w-20 h-20" />
                       </div>
+                      <div 
+                      className="p-2 bg-slate-300 text-sm rounded-md mt-2 text-slate-700">
+                        <p>Quantity:{countQty(p._id, p.stock)}</p></div>
 
                       <div className="flex m-x-4 flex-col justify-center text-center gap-y-2 mt-2">
                         <p className="h-11 text-ellipsis overflow-hidden text-sm">
@@ -134,6 +154,7 @@ const PosPage = () => {
                         </p>
                         <p className="font-bold">{p.price}$</p>
                       </div>
+                    </button>
                     </div>
                   ))}
                 </div>

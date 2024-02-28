@@ -25,7 +25,7 @@ const Dashboard = () => {
         let sum = 0;
         orders.forEach(order => {
             order.line_items.forEach(item => {
-              const itemSum =  item.quantity * item.price_data.unit_amount /100;
+              const itemSum =  item.quantity * item.price_data.unit_amount;
               sum += itemSum;
             })
         })

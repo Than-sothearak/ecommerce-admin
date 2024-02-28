@@ -70,7 +70,7 @@ const Orders = ({ swal }) => {
                 </td>
                 <td className="border">
                   {order.name}, {order.email}, {order.city}, <br />
-                  {order.streetAddress}, {order.postalCode}, {order.country}{" "}
+                  Tel: {order.phone}
                   <br />
                 </td>
                 <td>

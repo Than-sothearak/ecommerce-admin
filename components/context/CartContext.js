@@ -4,40 +4,37 @@ export const CartContext = createContext({});
 export function CartContextProvider({ children }) {
   const ls = typeof window !== "undefined" ? window.localStorage : null;
   const [cartProducts, setCartProducts] = useState([]);
-  const [inputs, setInputs] = useState('');
-  const notify = () => toast('Here is your toast.');
+  const [inputs, setInputs] = useState("");
+  const notify = () => toast("Here is your toast.");
 
   useEffect(() => {
-    if (cartProducts?.length > 0) {
+    if (cartProducts?.length >= 0) {
       ls?.setItem("cart", JSON.stringify(cartProducts));
     }
   }, [cartProducts]);
-  
+
   useEffect(() => {
     if (ls && ls.getItem("cart")) {
       setCartProducts(JSON.parse(ls.getItem("cart")));
     }
   }, []);
-  function inputSearch (value) {
-    setInputs(value)
+  function inputSearch(value) {
+    setInputs(value);
   }
   function addProduct(productId, title) {
     setCartProducts((prev) => [...prev, productId]);
   }
-  
+
   function removeProduct(productId) {
-    setCartProducts(prev => {
+    setCartProducts((prev) => {
       const pos = prev.indexOf(productId);
       if (pos !== -1) {
-        return prev.filter((value,index) => index !== pos);
-      
+        return prev.filter((value, index) => index !== pos);
       }
       return prev;
-
     });
   }
   function clearCart() {
-    ls.removeItem("cart");
     setCartProducts([]);
   }
   return (
@@ -51,11 +48,9 @@ export function CartContextProvider({ children }) {
         addProduct,
         removeProduct,
         clearCart,
-       
       }}
     >
       {children}
     </CartContext.Provider>
   );
 }
-
