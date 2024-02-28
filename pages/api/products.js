@@ -10,16 +10,17 @@ export default async function handler(req, res) {
 
   if (method === "GET") {
     const page = req.query.page || 0;
-    const itemPerPage = 20;
+    const itemPerPage = 15;
     const productQuery = {};
 
     const count = await Product.estimatedDocumentCount(productQuery);
-
+   
     if (phrase) {
       productQuery["$or"] = [
         { title: { $regex: phrase, $options: "i" } },
         { desciption: { $regex: phrase, $options: "i" } },
       ];
+
      
       const items = (await Product
         .find(productQuery)

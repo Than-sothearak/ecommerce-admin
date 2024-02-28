@@ -11,7 +11,9 @@ export default async function handler(req, res) {
   
   if (method === "GET") {
     const page = req.query.page || 0;
+
     const itemPerPage = 15;
+
     const productQuery = {};
     
     if (catId) {
@@ -46,4 +48,5 @@ export default async function handler(req, res) {
       res.json({ pagination: { count, countPage }, items });
     }
   }
+
 }

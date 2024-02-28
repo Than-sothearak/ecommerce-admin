@@ -45,17 +45,19 @@ const Setting = ({ swal }) => {
       <form>
         <label>Featured product</label>
         <div className="flex gap-1">
-          <select
-            value={featuredId}
-            title="choose futured product"
-            onChange={(e) => setFeaturedId(e.target.value)}
-          >
-            {products.map((product) => (
-              <option key={product._id} value={product._id}>
-                {product.title}
-              </option>
-            ))}
-          </select>
+         {products.length > 0 && (
+           <select
+           value={featuredId}
+           title="choose futured product"
+           onChange={(e) => setFeaturedId(e.target.value)}
+         >
+           {products?.map((product) => (
+             <option key={product._id} value={product._id}>
+               {product.title}
+             </option>
+           ))}
+         </select>
+         )}
           
         </div>
         <label>Shipping fee in USD</label>
