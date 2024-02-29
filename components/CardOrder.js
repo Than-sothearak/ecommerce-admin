@@ -195,14 +195,14 @@ export const CardOrder = () => {
       <div className="p-4 flex flex-col gap-2">
         <table className="table-auto">
           <thead className="border-b-2">
-            <tr>
-              <th>Product</th>
-              <th className="w-48">Price</th>
-              <th>Discount</th>
-              <th className="w-28">Quantity</th>
+            <tr className="text-start">
+              <th className="text-center w-[300px]">Product</th>
+              <th className="w-[130px]">Price</th>
+              <th className="w-[120px]">Discount</th>
+              <th className="w-[130px]">Quantity</th>
             </tr>
           </thead>
-          {!productCards?.length > 0 && (
+          {!matchingProducts?.length > 0 && (
             <tr className="border-b-2">
               <td colSpan={4} className="text-center p-10 italic text-muted">
                 <p>No item</p>
@@ -231,8 +231,9 @@ export const CardOrder = () => {
                       : eachItemtotalPrice(p._id, p.price)}
                   </p>
                 </td>
-                <td className="p-4 w-[90px] text-center">
+                <td className="p-4">
                   <input
+                  className="text-center"
                     placeholder="%"
                     value={p?.discount ? p.discount : 0 }
                     onChange={(e) =>
@@ -240,7 +241,7 @@ export const CardOrder = () => {
                     }
                   />
                 </td>
-                <td className="flex items-center justify-between my-4 px-4">
+                <td className="flex items-center justify-center my-4 px-0 gap-x-4">
                   <button
                     type="button"
                     className="border border-slate-200 p-2 rounded-md"
@@ -289,7 +290,7 @@ export const CardOrder = () => {
               <td>Total</td>
               <td></td>
               <td></td>
-              <td className="text-xl font-bold text-end">
+              <td className="text-xl font-bold text-end w-[80px]">
                 ${calculateTotalPrice()}
               </td>
             </tr>
