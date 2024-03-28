@@ -19,8 +19,10 @@ export default function EditProductPage() {
   }, [id]);
   return (
     <Layout>
-      <h1 className="font-bold">Edit page</h1>
+    <div className="px-6 py-6 border rounded-md text-sm">
+    <h1 className="font-bold">Edit page</h1>
       {productInfo && <ProductForm {...productInfo} />}
+    </div>
     </Layout>
   );
 }

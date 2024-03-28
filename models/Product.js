@@ -10,6 +10,7 @@ const ProductSchema = new Schema({
   images: [{ type: String }],
   category: { type: mongoose.Types.ObjectId, ref: Category },
   properties: {type:Object},
+  status: { type: Number,},
 }, {
   timestamps: true,
 });

@@ -13,15 +13,19 @@ export default function ProductForm({
   images: currentImages,
   category: currentCategory,
   properties: currentProductProps,
+  status: currentStatus,
 }) {
   const router = useRouter();
   const [category, setCategory] = useState(currentCategory || "");
-  const [productProperties, setProductProperties] = useState(currentProductProps || {});
+  const [productProperties, setProductProperties] = useState(
+    currentProductProps || {}
+  );
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDesc || "");
-  const [stock, setStock] = useState(currentStock || '')
+  const [stock, setStock] = useState(currentStock || "");
   const [price, setPrice] = useState(currntPrice || "");
   const [images, setImages] = useState(currentImages || []);
+  const [status, setStatus] = useState(currentStatus || 0);
   const [goToProduct, setGoToProduct] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -42,6 +46,7 @@ export default function ProductForm({
       images,
       category,
       properties: productProperties,
+      status,
     };
     if (_id) {
       //updateForm
@@ -65,7 +70,7 @@ export default function ProductForm({
   async function UploadImages(e) {
     e.preventDefault();
     const files = e.target?.files;
-    console.log(files)
+    console.log(files);
     if (files?.length > 0) {
       setIsUploading(true);
       const data = new FormData();
@@ -94,20 +99,18 @@ export default function ProductForm({
 
   if (categories?.length > 0 && category) {
     let selectCategory = categories?.find(({ _id }) => _id === category);
-   
+
     propertiesToFill.push(...selectCategory?.properties);
     while (selectCategory?.parent?._id) {
-      //we want to find parent id of child category 
+      //we want to find parent id of child category
       const parentCat = categories.find(
         ({ _id }) => _id === selectCategory.parent?._id
       );
       propertiesToFill.push(...parentCat.properties);
       selectCategory = parentCat;
     }
-    
   }
- 
-  
+
   return (
     <form onSubmit={createProdouct}>
       <label>Product name</label>
@@ -118,12 +121,40 @@ export default function ProductForm({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       ></input>
+
+<label>Status</label>
+
+<select
+  required
+  value={status}
+  onChange={(e) => setStatus(e.target.value)}
+>
+
+  <option
+    required
+    key="Inactived"
+    title="Inactived"
+    value={0}
+  >
+   InActived
+  </option>
+
+  <option
+    required
+    key="Actived"
+    title="Actived"
+    value={1}
+  >
+   Actived
+  </option>
+</select>
       <label>Category</label>
 
-      <select 
-      required
-      value={category} 
-      onChange={(e) => setCategory(e.target.value)}>
+      <select
+        required
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      >
         <option value="">N/a</option>
         {categories.length > 0 &&
           categories.map((category) => (
@@ -137,16 +168,11 @@ export default function ProductForm({
             </option>
           ))}
       </select>
-      <hr className="my-4"/>
+      <hr className="my-4" />
       <p className="mb-2">Properties</p>
       {propertiesToFill.length > 0 &&
         propertiesToFill.map((property) => (
-          <div
-            title="select property"
-            key={property.name}
-            className="gap-1"
-    
-          >
+          <div title="select property" key={property.name} className="gap-1">
             <label>{property.name}</label>
             <select
               value={productProperties[property.name]}
@@ -224,6 +250,7 @@ export default function ProductForm({
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       ></input>
+
       <button className="btn-primary" type="submit">
         Save
       </button>

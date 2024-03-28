@@ -7,7 +7,8 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="text-blue-900 flex justify-between">
+    <div className="px-6 py-6 border rounded-md text-sm">
+    <div className="text-blue-900 flex justify-between">
         <h2>
           Hello, <b>{session?.user?.name}</b>
         </h2>
@@ -20,8 +21,10 @@ export default function Home() {
           <span className="py-1 px-2">{session?.user?.name}</span>
         </div>
       </div>
-
       <Dashboard />
+    </div>
+
+     
     </Layout>
   );
 }

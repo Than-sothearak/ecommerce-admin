@@ -41,6 +41,7 @@ const Setting = ({ swal }) => {
 
   return (
     <Layout>
+      <div className="px-6 py-6 border rounded-md text-sm">
       <h1>Setting</h1>
       <form>
         <label>Featured product</label>
@@ -78,6 +79,7 @@ const Setting = ({ swal }) => {
           Save setting
         </button>
       </form>
+      </div>
     </Layout>
   );
 };

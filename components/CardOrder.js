@@ -142,7 +142,7 @@ export const CardOrder = () => {
       )
     );
   }
-  console.log(matchingProducts);
+ 
   return (
     <form className="border-slate-200 border " onSubmit={handleProcess}>
       <div className="shadow-sm p-4 grid grid-cols-2 gap-x-4">

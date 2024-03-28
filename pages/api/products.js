@@ -6,7 +6,17 @@ export default async function handler(req, res) {
   const { method } = req;
   await mongooseConnect();
   await isAdminRequest(req, res);
+
   const { phrase } = req.query;
+  const catId = req.query.category;
+  const { status } = req.query;
+  let sorted;
+
+  if (status === "inActive") {
+    sorted = 0;
+  } else if (status === "active") {
+    sorted = 1;
+  }
 
   if (method === "GET") {
     const page = req.query.page || 0;
@@ -14,25 +24,29 @@ export default async function handler(req, res) {
     const productQuery = {};
 
     const count = await Product.estimatedDocumentCount(productQuery);
-   
-    if (phrase) {
-      productQuery["$or"] = [
-        { title: { $regex: phrase, $options: "i" } },
-        { desciption: { $regex: phrase, $options: "i" } },
-      ];
 
-     
-      const items = (await Product
-        .find(productQuery)
+    if (phrase) {
+      if (sorted === undefined) {
+        productQuery["$or"] = [
+          { title: { $regex: phrase, $options: "i" } },
+          { desciption: { $regex: phrase, $options: "i" } },
+        ];
+      } else {
+        productQuery["$or"] = [
+          { title: { $regex: phrase, $options: "i" }, status: sorted },
+          { desciption: { $regex: phrase, $options: "i" }, status: sorted },
+        ];
+      }
+
+      const items = await Product.find(productQuery)
         .skip(page * itemPerPage)
-        .limit(itemPerPage)
-        )
-        const countPageS = items.length / itemPerPage;
-      
-        res.json({
-          pagination: { count, countPageS }, items
-        })
-        ;
+        .limit(itemPerPage);
+      const countPageS = items.length / itemPerPage;
+
+      res.json({
+        pagination: { count, countPageS },
+        items,
+      });
     } else {
       if (req.query?.id) {
         res.json(await Product.findOne({ _id: req.query.id }));
@@ -46,8 +60,16 @@ export default async function handler(req, res) {
     }
   }
   if (method === "POST") {
-    const { title, description, price, images, category, properties, stock } =
-      req.body;
+    const {
+      title,
+      description,
+      price,
+      images,
+      category,
+      properties,
+      stock,
+      status,
+    } = req.body;
     const productDoc = await Product.create({
       title,
       description,
@@ -56,11 +78,23 @@ export default async function handler(req, res) {
       category,
       properties,
       stock,
+      status,
     });
     res.json(productDoc);
   }
-
+  const products = await Product.find({stock: 0});
+ 
+  if (products.length > 0) {
+    for (const productStatus of products ) {
+      await Product.updateOne({
+        _id: productStatus._id,
+      }, {status: 0});
+      res.json
+    }
+  }
+  
   if (method === "PUT") {
+
     const {
       title,
       description,
@@ -70,10 +104,11 @@ export default async function handler(req, res) {
       properties,
       stock,
       _id,
+      status,
     } = req.body;
     await Product.updateOne(
       { _id },
-      { title, description, price, images, category, properties, stock }
+      { title, description, price, images, category, properties, stock, status }
     );
     res.json(true);
   }

@@ -8,16 +8,9 @@ export const TableProduct = ({ products, categories }) => {
   });
 
   return (
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-          Our products
-          <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-            Browse a list of Flowbite products designed to help you work and
-            play, stay organized, get answers, keep in touch, grow your
-            business, and more.
-          </p>
-        </caption>
+      
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3">
@@ -33,6 +26,9 @@ export const TableProduct = ({ products, categories }) => {
               Price
             </th>
             <th scope="col" class="px-6 py-3">
+              Status
+            </th>
+            <th scope="col" class="px-6 py-3 text-end">
               Actions
             </th>
           </tr>
@@ -54,9 +50,12 @@ export const TableProduct = ({ products, categories }) => {
               <td class="px-6 py-4">
                 {categories.filter((c) => c._id == product.category)[0].name}
               </td>
-              <td class="px-6 py-4">
-                {USDollar.format(product.price)}
-              </td>
+              <td class="px-6 py-4">{USDollar.format(product.price)}</td>
+              {product.status === 0 ? (
+                <td class="px-6 py-4"><p className="bg-red-100 text-red-700 border-red-700 border text-center rounded-md p-2 w-24">InActived</p></td>
+              ) : (
+                <td class="px-6 py-4"><p className="bg-green-100 border-green-700 border text-green-700 text-center rounded-md p-2 w-24">Actived</p></td>
+              )}
               <td class="px-6 py-4 text-right flex justify-end gap-x-2 items-center">
                 <Link
                   href={"/products/edit/" + product._id}

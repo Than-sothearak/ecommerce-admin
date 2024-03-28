@@ -41,34 +41,35 @@ const Orders = ({ swal }) => {
 
   return (
     <Layout>
+      <div className="px-6 py-6 border rounded-md text-sm">
       <h1>Orders</h1>
       {isUploading && (
         <div className="flex justify-center">
           <BeatLoader />
         </div>
       )}
-      <div>QUERY RESULTS:{orders.length}</div>
-      <table className="basic">
-        <thead className="border ">
-          <tr>
-            <th>Date</th>
-            <th>Paid</th>
-            <th>Recipient</th>
-            <th>Product</th>
+      <div>QUERY RESULTS: {orders.length}</div>
+      <table className="table-auto w-full">
+        <thead className="text-gray-600">
+          <tr className="px-4 py-2 border-b">
+            <th className="px-4 py-2">Date</th>
+            <th className="px-4 py-2">Paid</th>
+            <th className="px-4 py-2">Recipient</th>
+            <th className="px-4 py-2">Product</th>
           </tr>
         </thead>
 
-        <tbody className="border text-sm text-gray-500 ">
+        <tbody className="text-gray-500">
           {orders.length > 0 &&
             orders.map((order) => (
-              <tr key={order._id} className="border">
-                <td className="border">
+              <tr key={order._id} className="px-4 py-2 border-b">
+                <td className="px-4 py-2 border-b">
                   {new Date(order.createdAt).toLocaleString()}
                 </td>
                 <td className={order.paid ? "text-green-600" : "text-red-500"}>
                   {order.paid ? "Paid" : "No"}
                 </td>
-                <td className="border">
+                <td className="">
                   {order.name}, {order.email}, {order.city}, <br />
                   Tel: {order.phone}
                   <br />
@@ -105,6 +106,7 @@ const Orders = ({ swal }) => {
             ))}
         </tbody>
       </table>
+      </div>
     </Layout>
   );
 };

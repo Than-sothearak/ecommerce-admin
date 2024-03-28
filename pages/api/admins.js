@@ -4,7 +4,7 @@ import { isAdminRequest } from "./auth/[...nextauth]";
 
 export default async function handler (req, res) {
     await mongooseConnect();
-    // await isAdminRequest(req, res);
+    await isAdminRequest(req, res);
 
     if (req.method === 'POST') {
       const {email} = req.body;
