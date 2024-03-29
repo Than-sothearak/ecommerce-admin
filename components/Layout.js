@@ -1,30 +1,32 @@
 import { useSession, signIn } from "next-auth/react";
 import { Nav } from "./Nav";
 import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 import { Footer } from "./Footer";
-import Logo from "./Logo";
+
 import Login from "./Login";
+import { BeatLoader } from "react-spinners";
 
 export default function Layout({ children }) {
   const { data: session } = useSession();
   const [showNav, setShowNav] = useState(false);
   
+
   const handleToggle = () => {
     setShowNav((current) => !current);
   };
+
 
   if (!session) {
     return (
       <div className="bg-gray-200">
         <Login />
-       
       </div>
     );
   }
+
   return (
     <div className="min-h-screen ml-2">
-    <div className="md:hidden flex items-center">
+      <div className="md:hidden flex items-center">
         <button onClick={() => handleToggle()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -41,18 +43,13 @@ export default function Layout({ children }) {
             />
           </svg>
         </button>
-        <div className="flex grow justify-center p-4 mr-6">
-      
-        </div>
-       
+        <div className="flex grow justify-center p-4 mr-6"></div>
       </div>
 
       <div className="bg-gray-200 flex min-h-screen">
         <Nav show={showNav} />
 
-        <div className="bg-white flex-grow p-4">
-          {children}
-        </div>
+        <div className="bg-white flex-grow p-4">{children}</div>
       </div>
       <Footer />
     </div>
