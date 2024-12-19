@@ -9,7 +9,7 @@ export default function ProductForm({
   title: currentTitle,
   description: currentDesc,
   stock: currentStock,
-  price: currntPrice,
+  price: currentPrice,
   images: currentImages,
   category: currentCategory,
   properties: currentProductProps,
@@ -17,18 +17,17 @@ export default function ProductForm({
 }) {
   const router = useRouter();
   const [category, setCategory] = useState(currentCategory || "");
-  const [productProperties, setProductProperties] = useState(
-    currentProductProps || {}
-  );
+  const [productProperties, setProductProperties] = useState(currentProductProps || {});
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDesc || "");
   const [stock, setStock] = useState(currentStock || "");
-  const [price, setPrice] = useState(currntPrice || "");
+  const [price, setPrice] = useState(currentPrice || "");
   const [images, setImages] = useState(currentImages || []);
   const [status, setStatus] = useState(currentStatus || 0);
-  const [goToProduct, setGoToProduct] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null); // Success message state
 
   useEffect(() => {
     axios.get("/api/categories").then((result) => {
@@ -36,8 +35,11 @@ export default function ProductForm({
     });
   }, []);
 
-  const createProdouct = async (e) => {
+  const updateProduct = async (e) => {
     e.preventDefault();
+    setError(null);
+    setSuccessMessage(null); // Reset success message
+
     const data = {
       title,
       description,
@@ -48,139 +50,149 @@ export default function ProductForm({
       properties: productProperties,
       status,
     };
-    if (_id) {
-      //updateForm
-      await axios.put("/api/products", { ...data, _id });
-      alert("updated!");
-    } else {
-      //Create
-      if (title === "" || description === "" || price === "" || stock === "") {
-        alert("please input value");
-      } else {
-        await axios.post("/api/products", data);
-      }
+
+    if (!title || !description || !price || !stock) {
+      setError("Please fill in all the required fields.");
+      return;
     }
 
-    setGoToProduct(true);
-  };
-  if (goToProduct) {
-    router.push("/products");
-  }
+    try {
+      // Update Product
+      await axios.put("/api/products", { ...data, _id });
+      setSuccessMessage("Product updated successfully!");
 
-  async function UploadImages(e) {
+      // Update the product info without reloading the page
+      setTitle(data.title);
+      setDescription(data.description);
+      setStock(data.stock);
+      setPrice(data.price);
+      setImages(data.images);
+      setCategory(data.category);
+      setProductProperties(data.properties);
+      setStatus(data.status);
+
+       // Hide the success message after 2 seconds
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 2000);
+
+      // Navigate to the same page with updated query parameters (or dynamic route)
+      router.push(router.asPath, undefined, { shallow: true });  // Use shallow routing to preserve the current page but update the state
+    } catch (err) {
+      setError("Failed to save product. Please try again.");
+      console.error(err);
+    }
+  };
+
+  const uploadImages = async (e) => {
     e.preventDefault();
-    const files = e.target?.files;
-    console.log(files);
+    const files = e.target.files;
+
     if (files?.length > 0) {
       setIsUploading(true);
       const data = new FormData();
+
       for (const file of files) {
         data.append("file", file);
       }
-      const res = await axios.post("/api/upload", data);
-      setImages((images) => {
-        return [...images, ...res.data.links];
-      });
-      setIsUploading(false);
+
+      try {
+        const res = await axios.post("/api/upload", data);
+        setImages((prevImages) => [...prevImages, ...res.data.links]);
+      } catch (err) {
+        setError("Failed to upload images.");
+        console.error(err);
+      } finally {
+        setIsUploading(false);
+      }
     }
-  }
-  function updateImagesOrder(images) {
-    setImages(images);
-  }
+  };
 
-  function changeProductProperty(propertyName, value) {
-    setProductProperties((prev) => {
-      const newProductProps = { ...prev };
-      newProductProps[propertyName] = value;
-      return newProductProps;
-    });
-  }
+  const updateImagesOrder = (newImages) => {
+    setImages(newImages);
+  };
+
+  const changeProductProperty = (propertyName, value) => {
+    setProductProperties((prev) => ({
+      ...prev,
+      [propertyName]: value,
+    }));
+  };
+
   const propertiesToFill = [];
+  if (categories.length > 0 && category) {
+    let selectedCategory = categories.find(({ _id }) => _id === category);
+    propertiesToFill.push(...(selectedCategory?.properties || []));
 
-  if (categories?.length > 0 && category) {
-    let selectCategory = categories?.find(({ _id }) => _id === category);
-
-    propertiesToFill.push(...selectCategory?.properties);
-    while (selectCategory?.parent?._id) {
-      //we want to find parent id of child category
-      const parentCat = categories.find(
-        ({ _id }) => _id === selectCategory.parent?._id
-      );
-      propertiesToFill.push(...parentCat.properties);
-      selectCategory = parentCat;
+    while (selectedCategory?.parent?._id) {
+      selectedCategory = categories.find(({ _id }) => _id === selectedCategory.parent._id);
+      propertiesToFill.push(...(selectedCategory?.properties || []));
     }
   }
 
   return (
-    <form onSubmit={createProdouct}>
-      <label>Product name</label>
-      <input
-        required
-        type="text"
-        placeholder="new product"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      ></input>
-
-<label>Status</label>
-
-<select
-  required
-  value={status}
-  onChange={(e) => setStatus(e.target.value)}
->
-
-  <option
-    required
-    key="Inactived"
-    title="Inactived"
-    value={0}
+    <div className="relative">
+      {/* Success Message */}
+      {successMessage && (
+  <div
+    className={`fixed top-10 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-4 rounded-md shadow-lg transition-opacity duration-300 ${
+      successMessage ? "opacity-100" : "opacity-0"
+    }`}
   >
-   InActived
-  </option>
+    <p>{successMessage}</p>
+  </div>
+)}
 
-  <option
-    required
-    key="Actived"
-    title="Actived"
-    value={1}
-  >
-   Actived
-  </option>
-</select>
-      <label>Category</label>
+      {/* Error Message */}
+      {error && (
+        <div className="fixed top-10 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-4 rounded-md shadow-lg">
+          <p>{error}</p>
+        </div>
+      )}
 
-      <select
-        required
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      >
-        <option value="">N/a</option>
-        {categories.length > 0 &&
-          categories.map((category) => (
-            <option
-              required
-              key={category.name}
-              title={category.name}
-              value={category._id}
-            >
-              {category.name}
+      <form onSubmit={updateProduct}>
+        <label>Product Name</label>
+        <input
+          required
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Enter product name"
+        />
+
+        <label>Status</label>
+        <select
+          required
+          value={status}
+          onChange={(e) => setStatus(Number(e.target.value))}
+        >
+          <option value={0}>Inactive</option>
+          <option value={1}>Active</option>
+        </select>
+
+        <label>Category</label>
+        <select
+          required
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">Select a category</option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat._id}>
+              {cat.name}
             </option>
           ))}
-      </select>
-      <hr className="my-4" />
-      <p className="mb-2">Properties</p>
-      {propertiesToFill.length > 0 &&
-        propertiesToFill.map((property) => (
-          <div title="select property" key={property.name} className="gap-1">
+        </select>
+
+        <hr />
+        {propertiesToFill.map((property) => (
+          <div key={property.name}>
             <label>{property.name}</label>
             <select
-              value={productProperties[property.name]}
-              onChange={(e) =>
-                changeProductProperty(property.name, e.target.value)
-              }
+              value={productProperties[property.name] || ""}
+              onChange={(e) => changeProductProperty(property.name, e.target.value)}
             >
-              <option>N/a</option>
+              <option value="">N/A</option>
               {property.values.map((value, index) => (
                 <option key={index} value={value}>
                   {value}
@@ -189,71 +201,44 @@ export default function ProductForm({
             </select>
           </div>
         ))}
-      <label>Photos</label>
-      <div className="mb-2 flex flex-wrap gap-2">
-        <ReactSortable
-          className="flex flex-wrap gap-1"
-          list={images}
-          setList={updateImagesOrder}
-        >
-          {!!images?.length &&
-            images.map((link) => (
-              <div key={link} className="h-24">
-                <img src={link} alt={link} className="rounded-lg h-24" />
-              </div>
-            ))}
+
+        <label>Images</label>
+        <ReactSortable list={images} setList={updateImagesOrder}>
+          {images.map((link, index) => (
+            <div key={index} className="image-container">
+              <img src={link} alt="Uploaded" className="rounded-lg h-24" />
+            </div>
+          ))}
         </ReactSortable>
+        {isUploading && <BeatLoader />}
+        <input type="file" multiple onChange={uploadImages} />
 
-        {isUploading && (
-          <div className="h-24">
-            <BeatLoader />
-          </div>
-        )}
-        <label className="w-24 h-24 text-center flex items-center justify-center text-sm gap-1 text-gray-500 rounded-lg bg-gray-200 cursor-pointer">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"
-            />
-          </svg>
+        <label>Description</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        ></textarea>
 
-          <div>Upload</div>
-          <input type="file" className="hidden" onChange={UploadImages} />
-        </label>
-        {!images?.length && <div>No Photo</div>}
-      </div>
-      <label>Description</label>
-      <textarea
-        placeholder="description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      ></textarea>
-      <label>Stock</label>
-      <input
-        type="number"
-        placeholder="quantity"
-        value={stock}
-        onChange={(e) => setStock(e.target.value)}
-      ></input>
-      <label>Price</label>
-      <input
-        type="number"
-        placeholder="price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      ></input>
+        <label>Stock</label>
+        <input
+          type="number"
+          value={stock}
+          onChange={(e) => setStock(Number(e.target.value))}
+          placeholder="Enter stock quantity"
+        />
 
-      <button className="btn-primary" type="submit">
-        Save
-      </button>
-    </form>
+        <label>Price</label>
+        <input
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(Number(e.target.value))}
+          placeholder="Enter price"
+        />
+
+        <button type="submit" className="btn-primary">
+          Save
+        </button>
+      </form>
+    </div>
   );
 }

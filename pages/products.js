@@ -25,6 +25,7 @@ const Products = ({}) => {
   const [pageCountS, setPageCountS] = useState(0);
   const [categoryName, setCategoryName] = useState("all");
   const [status, setStatus] = useState("all");
+  const [stocks, setStocks] = useState("all");
 
   const STATUS_FILTER = {
     id: "status",
@@ -33,10 +34,10 @@ const Products = ({}) => {
       { value: "all", label: "All " },
       { value: "inActive", label: "InActive " },
       { value: "active", label: "Active" },
+      { value: "inStock", label: "In stock" },
+      { value: "outOfStock", label: "Out of Stock" },
     ],
   };
-
-
 
   const fatchData = async () => {
     try {
@@ -56,7 +57,7 @@ const Products = ({}) => {
         const ressult = await axios.get("/api/categories");
         setCategories(ressult.data);
         const res = await axios.get(
-          "/api/productsfilter?page=" + page + "&status=" + status
+          "/api/productsfilter?page=" + page + "&status=" + status 
         );
         setProducts(res.data.items);
         setPageCount(res.data.pagination.countPage);
@@ -69,7 +70,9 @@ const Products = ({}) => {
             "&category=" +
             catId +
             "&status=" +
-            status
+            status +
+            "&stocks="+
+            stocks
         );
         setProducts(res.data.items);
         setPageCount(res.data.pagination.countPage);
@@ -98,7 +101,7 @@ const Products = ({}) => {
   }
   useEffect(() => {
     fatchData();
-  }, [inputs, page, status, categoryName, catId]);
+  }, [inputs, page, status, stocks,categoryName, catId]);
 
   const handleChanged = (value) => {
     setCatId((prev) => (prev === value ? "" : value));
@@ -168,6 +171,7 @@ const Products = ({}) => {
                 </select>
               </div>
             </div>
+         
           </div>
         </div>
         {isUploading && (

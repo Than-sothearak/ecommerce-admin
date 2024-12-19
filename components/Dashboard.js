@@ -11,6 +11,8 @@ const Dashboard = () => {
      })
     }, [])
 
+    console.log(subHours(new Date, 24))
+
     const ordersToday = orders.filter(order => (
         new Date(order.createdAt) > subHours(new Date, 24)
     ))
